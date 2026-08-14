@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Salary Ledger — Convert Annual, Monthly, Daily and Hourly Pay</title>
+<meta name="description" content="Free salary calculator for the US and Europe. Convert your pay between annual, monthly, daily and hourly rates instantly, in USD, EUR or GBP.">
+
+<!-- ============================================================
+     GOOGLE SEARCH CONSOLE
+     Doğrulama kodunuzu aldığınızda, aşağıdaki satırı açıp
+     "YOUR_VERIFICATION_CODE" kısmını Google'ın size verdiği
+     kodla değiştirin. Bana kodu gönderirsen bu adımı senin için
+     yaparım.
+     <meta name="google-site-verification" content="YOUR_VERIFICATION_CODE" />
+     ============================================================ -->
+
+<meta property="og:title" content="Salary Ledger — Salary & Wage Calculator">
+<meta property="og:description" content="Convert your pay between annual, monthly, daily and hourly rates. Built for the US and Europe.">
+<meta property="og:type" content="website">
+<meta name="robots" content="index, follow">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How do I convert an hourly wage to an annual salary?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Multiply your hourly rate by the number of hours you work per day, then by the number of days you work per week, then by the number of weeks you work per year. The default assumption is 8 hours a day, 5 days a week and 52 weeks a year."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How is monthly salary calculated from annual salary?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Monthly salary is simply the annual salary divided by 12, since salaried pay is normally spread evenly across the year regardless of how many days are in a given month."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does this calculator account for taxes?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. This tool converts gross pay between time periods only. Tax rules differ widely by country, state and personal situation, so take-home pay is not included."
+      }
+    }
+  ]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --ink:#1E2A38;
+    --ink-soft:#4B5768;
+    --paper:#F6F3EC;
+    --paper-card:#FFFEFA;
+    --rule:#DAD4C4;
+    --rule-strong:#C3BBA4;
+    --brass:#A9793C;
+    --brass-dark:#7C5726;
+    --forest:#4B6B4F;
+    --forest-bg:#E7EEE4;
+    --font-display:'Fraunces', serif;
+    --font-body:'Inter', sans-serif;
+    --font-mono:'IBM Plex Mono', monospace;
+  }
+
+  *{ box-sizing: border-box; }
+
+  html{ scroll-behavior: smooth; }
+
+  body{
+    margin:0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior: auto; }
+    *{ transition: none !important; animation: none !important; }
+  }
+
+  .wrap{
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* ---------- header ---------- */
+
+  header.site-head{
+    padding: 48px 0 28px;
+  }
+
+  .brand-row{
+    display:flex;
+    align-items:center;
+    gap:12px;
+  }
+
+  .brand-mark{
+    width:34px;
+    height:34px;
+    border-radius:50%;
+    border:1.5px solid var(--brass);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family: var(--font-display);
+    font-size:17px;
+    color: var(--brass-dark);
+    flex-shrink:0;
+  }
+
+  .brand-name{
+    font-family: var(--font-display);
+    font-weight:600;
+    font-size:20px;
+    letter-spacing: 0.01em;
+  }
+
+  header.site-head p.tagline{
+    margin: 14px 0 0;
+    color: var(--ink-soft);
+    font-size:16px;
+    max-width: 46ch;
+    line-height:1.55;
+  }
+
+  /* ---------- calculator card ---------- */
+
+  .ledger{
+    background: var(--paper-card);
+    border: 1px solid var(--rule-strong);
+    border-radius: 14px;
+    padding: 30px 30px 0;
+    box-shadow: 0 1px 0 rgba(30,42,56,0.03);
+  }
+
+  .ledger-top{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:12px;
+    margin-bottom: 22px;
+  }
+
+  .ledger-title{
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight:600;
+    margin:0;
+  }
+
+  .currency-toggle{
+    display:flex;
+    border:1px solid var(--rule-strong);
+    border-radius:8px;
+    overflow:hidden;
+  }
+
+  .currency-toggle button{
+    font-family: var(--font-mono);
+    font-size: 13px;
+    border:none;
+    background: transparent;
+    color: var(--ink-soft);
+    padding: 7px 13px;
+    cursor:pointer;
+    border-left: 1px solid var(--rule-strong);
+  }
+
+  .currency-toggle button:first-child{ border-left:none; }
+
+  .currency-toggle button[aria-pressed="true"]{
+    background: var(--ink);
+    color: var(--paper-card);
+  }
+
+  .currency-toggle button:focus-visible,
+  .assume-field input:focus-visible,
+  .row input:focus-visible{
+    outline: 2px solid var(--brass);
+    outline-offset: 1px;
+  }
+
+  .row{
+    display:grid;
+    grid-template-columns: 26px 1fr 176px;
+    align-items:center;
+    gap: 14px;
+    padding: 16px 0;
+    border-top: 1px solid var(--rule);
+  }
+
+  .row:first-of-type{ border-top: 1px solid var(--rule); }
+
+  .row-index{
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--brass-dark);
+  }
+
+  .row-label{
+    font-size: 15px;
+    font-weight:500;
+  }
+
+  .row-sub{
+    display:block;
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    font-weight:400;
+    margin-top:2px;
+  }
+
+  .amount-field{
+    position:relative;
+    display:flex;
+    align-items:center;
+  }
+
+  .amount-field .sym{
+    position:absolute;
+    left:12px;
+    font-family: var(--font-mono);
+    color: var(--ink-soft);
+    font-size:15px;
+    pointer-events:none;
+  }
+
+  .row input{
+    width:100%;
+    font-family: var(--font-mono);
+    font-size: 16px;
+    font-variant-numeric: tabular-nums;
+    text-align:right;
+    padding: 9px 12px 9px 26px;
+    border: 1px solid var(--rule-strong);
+    border-radius: 7px;
+    background: var(--paper);
+    color: var(--ink);
+  }
+
+  .row input:hover{ border-color: var(--brass); }
+
+  /* perforated divider into the assumptions strip */
+  .perforation{
+    position:relative;
+    margin: 6px -30px 0;
+    height: 1px;
+    border-top: 1px dashed var(--rule-strong);
+  }
+
+  .perforation::before,
+  .perforation::after{
+    content:"";
+    position:absolute;
+    top:-7px;
+    width:14px;
+    height:14px;
+    border-radius:50%;
+    background: var(--paper);
+  }
+
+  .perforation::before{ left:-7px; }
+  .perforation::after{ right:-7px; }
+
+  .assumptions{
+    padding: 18px 0 26px;
+    margin: 0 -30px;
+    padding-left:30px;
+    padding-right:30px;
+  }
+
+  .assumptions-label{
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    color: var(--ink-soft);
+    margin: 0 0 12px;
+  }
+
+  .assume-grid{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+
+  .assume-field label{
+    display:block;
+    font-size:12.5px;
+    color: var(--ink-soft);
+    margin-bottom:6px;
+  }
+
+  .assume-field input{
+    width:100%;
+    font-family: var(--font-mono);
+    font-size:14px;
+    padding: 7px 10px;
+    border:1px solid var(--rule-strong);
+    border-radius:7px;
+    background: var(--paper);
+    color: var(--ink);
+  }
+
+  .assume-note{
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    margin: 12px 0 0;
+    line-height:1.5;
+  }
+
+  /* ---------- content sections ---------- */
+
+  main section.prose{
+    padding: 46px 0;
+    border-top: 1px solid var(--rule);
+  }
+
+  .prose h2{
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight:600;
+    margin: 0 0 14px;
+  }
+
+  .prose p{
+    font-size:15px;
+    line-height:1.7;
+    color: var(--ink-soft);
+    margin: 0 0 14px;
+  }
+
+  .formula{
+    font-family: var(--font-mono);
+    font-size: 13.5px;
+    background: var(--forest-bg);
+    color: var(--forest);
+    border-radius:7px;
+    padding: 12px 16px;
+    margin: 0 0 16px;
+    display:block;
+    line-height:1.6;
+  }
+
+  .faq-item{
+    padding: 18px 0;
+    border-top: 1px solid var(--rule);
+  }
+
+  .faq-item:first-of-type{ border-top:none; }
+
+  .faq-item h3{
+    font-size:15.5px;
+    font-weight:600;
+    margin: 0 0 8px;
+  }
+
+  .faq-item p{
+    font-size:14.5px;
+    line-height:1.65;
+    color: var(--ink-soft);
+    margin:0;
+  }
+
+  footer{
+    padding: 30px 0 60px;
+    border-top: 1px solid var(--rule);
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+
+  /* ---------- responsive ---------- */
+
+  @media (max-width: 560px){
+    .ledger{ padding: 24px 20px 0; }
+    .perforation, .assumptions{ margin-left:-20px; margin-right:-20px; }
+    .assumptions{ padding-left:20px; padding-right:20px; }
+    .row{ grid-template-columns: 20px 1fr; row-gap:10px; }
+    .row .amount-field{ grid-column: 1 / -1; }
+    .assume-grid{ grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="site-head">
+    <div class="brand-row">
+      <div class="brand-mark" aria-hidden="true">§</div>
+      <span class="brand-name">Salary Ledger</span>
+    </div>
+    <p class="tagline">Enter any one figure — hourly, daily, monthly or annual — and see the rest recalculate instantly. Built for pay conventions in the US and Europe.</p>
+  </header>
+</div>
+
+<div class="wrap">
+  <main>
+    <section class="ledger" aria-label="Salary calculator">
+      <div class="ledger-top">
+        <h1 class="ledger-title">Pay converter</h1>
+        <div class="currency-toggle" role="group" aria-label="Currency">
+          <button type="button" data-currency="USD" aria-pressed="true">USD $</button>
+          <button type="button" data-currency="EUR" aria-pressed="false">EUR €</button>
+          <button type="button" data-currency="GBP" aria-pressed="false">GBP £</button>
+        </div>
+      </div>
+
+      <div class="row">
+        <span class="row-index" aria-hidden="true">01</span>
+        <span class="row-label">Annual<span class="row-sub">per year</span></span>
+        <span class="amount-field">
+          <span class="sym" data-sym>$</span>
+          <input type="text" inputmode="decimal" id="field-annual" data-period="annual" value="60,000" aria-label="Annual pay">
+        </span>
+      </div>
+
+      <div class="row">
+        <span class="row-index" aria-hidden="true">02</span>
+        <span class="row-label">Monthly<span class="row-sub">per month, annual ÷ 12</span></span>
+        <span class="amount-field">
+          <span class="sym" data-sym>$</span>
+          <input type="text" inputmode="decimal" id="field-monthly" data-period="monthly" value="5,000" aria-label="Monthly pay">
+        </span>
+      </div>
+
+      <div class="row">
+        <span class="row-index" aria-hidden="true">03</span>
+        <span class="row-label">Daily<span class="row-sub">per working day</span></span>
+        <span class="amount-field">
+          <span class="sym" data-sym>$</span>
+          <input type="text" inputmode="decimal" id="field-daily" data-period="daily" value="230.77" aria-label="Daily pay">
+        </span>
+      </div>
+
+      <div class="row">
+        <span class="row-index" aria-hidden="true">04</span>
+        <span class="row-label">Hourly<span class="row-sub">per hour worked</span></span>
+        <span class="amount-field">
+          <span class="sym" data-sym>$</span>
+          <input type="text" inputmode="decimal" id="field-hourly" data-period="hourly" value="28.85" aria-label="Hourly pay">
+        </span>
+      </div>
+
+      <div class="perforation" aria-hidden="true"></div>
+
+      <div class="assumptions">
+        <p class="assumptions-label">Work pattern</p>
+        <div class="assume-grid">
+          <div class="assume-field">
+            <label for="assume-hours">Hours / day</label>
+            <input type="text" inputmode="decimal" id="assume-hours" value="8">
+          </div>
+          <div class="assume-field">
+            <label for="assume-days">Days / week</label>
+            <input type="text" inputmode="decimal" id="assume-days" value="5">
+          </div>
+          <div class="assume-field">
+            <label for="assume-weeks">Weeks / year</label>
+            <input type="text" inputmode="decimal" id="assume-weeks" value="52">
+          </div>
+        </div>
+        <p class="assume-note">Figures are gross pay, before tax and deductions. Change the work pattern above if your schedule differs from the standard 8 / 5 / 52.</p>
+      </div>
+    </section>
+
+    <section class="prose">
+      <h2>How the conversion works</h2>
+      <p>Every figure on the ledger comes from the same three numbers: how many hours you work in a day, how many days in a week, and how many weeks in a year. Change any one pay figure and the calculator solves backward through the same relationship to update the rest.</p>
+      <code class="formula">annual = hourly × hours/day × days/week × weeks/year<br>monthly = annual ÷ 12<br>daily = hourly × hours/day</code>
+      <p>The default assumption — 8 hours a day, 5 days a week, 52 weeks a year — reflects a typical full-time schedule in both the US and Europe. If you get paid holiday or take unpaid leave, adjust the weeks-per-year field to match your actual working weeks for a more accurate hourly rate.</p>
+    </section>
+
+    <section class="prose" aria-labelledby="faq-heading">
+      <h2 id="faq-heading">Frequently asked questions</h2>
+
+      <div class="faq-item">
+        <h3>How do I convert an hourly wage to an annual salary?</h3>
+        <p>Multiply your hourly rate by hours per day, then by days per week, then by weeks per year. With the standard assumptions that's hourly × 8 × 5 × 52, or hourly × 2,080.</p>
+      </div>
+
+      <div class="faq-item">
+        <h3>How is monthly salary calculated from annual salary?</h3>
+        <p>Divide the annual figure by 12. Salaried pay is normally spread evenly across the year, so this holds regardless of how many days fall in a given month.</p>
+      </div>
+
+      <div class="faq-item">
+        <h3>Does this calculator account for taxes?</h3>
+        <p>No. It converts gross pay between time periods only. Income tax, social contributions and take-home pay vary too much by country, state and personal circumstances to include here.</p>
+      </div>
+
+      <div class="faq-item">
+        <h3>Why does the daily rate not match annual ÷ 365?</h3>
+        <p>Daily pay here means pay for one working day, not one calendar day. It's calculated as hourly rate × hours per day, so weekends and non-working days are excluded.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Salary Ledger converts gross pay between annual, monthly, daily and hourly rates for the US and Europe. All calculations happen in your browser — no figures are sent or stored anywhere.</p>
+  </footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var state = {
+    currency: "USD",
+    symbols: { USD: "$", EUR: "€", GBP: "£" },
+    hours: 8,
+    days: 5,
+    weeks: 52
+  };
+
+  var fields = {
+    annual: document.getElementById("field-annual"),
+    monthly: document.getElementById("field-monthly"),
+    daily: document.getElementById("field-daily"),
+    hourly: document.getElementById("field-hourly")
+  };
+
+  var assumeInputs = {
+    hours: document.getElementById("assume-hours"),
+    days: document.getElementById("assume-days"),
+    weeks: document.getElementById("assume-weeks")
+  };
+
+  function parseNum(str){
+    if (typeof str !== "string") return NaN;
+    var cleaned = str.replace(/[^0-9.\-]/g, "");
+    return parseFloat(cleaned);
+  }
+
+  function fmt(num){
+    if (!isFinite(num)) return "";
+    return num.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
+  function hoursPerYear(){
+    return state.hours * state.days * state.weeks;
+  }
+
+  function recalcFrom(sourcePeriod){
+    var raw = parseNum(fields[sourcePeriod].value);
+    if (!isFinite(raw) || raw < 0) return;
+
+    var totalHours = hoursPerYear();
+    var annual, hourly;
+
+    if (sourcePeriod === "annual"){
+      annual = raw;
+      hourly = totalHours > 0 ? annual / totalHours : 0;
+    } else if (sourcePeriod === "monthly"){
+      annual = raw * 12;
+      hourly = totalHours > 0 ? annual / totalHours : 0;
+    } else if (sourcePeriod === "daily"){
+      hourly = state.hours > 0 ? raw / state.hours : 0;
+      annual = hourly * totalHours;
+    } else {
+      hourly = raw;
+      annual = hourly * totalHours;
+    }
+
+    var monthly = annual / 12;
+    var daily = hourly * state.hours;
+
+    var values = { annual: annual, monthly: monthly, daily: daily, hourly: hourly };
+    Object.keys(fields).forEach(function(period){
+      if (period === sourcePeriod) return;
+      fields[period].value = fmt(values[period]);
+    });
+  }
+
+  Object.keys(fields).forEach(function(period){
+    fields[period].addEventListener("input", function(){
+      recalcFrom(period);
+    });
+    fields[period].addEventListener("blur", function(){
+      var raw = parseNum(fields[period].value);
+      if (isFinite(raw)){
+        fields[period].value = fmt(raw);
+      }
+    });
+  });
+
+  function onAssumeChange(){
+    var h = parseNum(assumeInputs.hours.value);
+    var d = parseNum(assumeInputs.days.value);
+    var w = parseNum(assumeInputs.weeks.value);
+    state.hours = isFinite(h) && h > 0 ? h : state.hours;
+    state.days = isFinite(d) && d > 0 ? d : state.days;
+    state.weeks = isFinite(w) && w > 0 ? w : state.weeks;
+    recalcFrom("annual");
+  }
+
+  Object.keys(assumeInputs).forEach(function(key){
+    assumeInputs[key].addEventListener("input", onAssumeChange);
+  });
+
+  var toggleButtons = document.querySelectorAll(".currency-toggle button");
+  toggleButtons.forEach(function(btn){
+    btn.addEventListener("click", function(){
+      toggleButtons.forEach(function(b){ b.setAttribute("aria-pressed", "false"); });
+      btn.setAttribute("aria-pressed", "true");
+      state.currency = btn.getAttribute("data-currency");
+      var sym = state.symbols[state.currency];
+      document.querySelectorAll("[data-sym]").forEach(function(el){ el.textContent = sym; });
+    });
+  });
+
+  recalcFrom("annual");
+})();
+</script>
+
+</body>
+</html>
