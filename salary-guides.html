@@ -1,12 +1,14 @@
+```html id="e5k0p3"
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Salary Guides | Salary Ledger</title>
+    <title>Salary Guides | Hourly and Annual Salary Information | Salary Ledger</title>
 
-    <meta name="description" content="Salary guides and easy-to-understand salary breakdowns for hourly, weekly, monthly and annual pay.">
+    <meta name="description" content="Explore Salary Ledger salary guides covering hourly wages, annual salaries, weekly pay and monthly income.">
+
     <meta name="robots" content="index, follow">
 
     <link rel="canonical" href="https://modernehome3-cpu.github.io/PayToHourly/salary-guides.html">
@@ -21,13 +23,13 @@
             font-family: Arial, Helvetica, sans-serif;
             background: #f5f7fb;
             color: #1f2937;
-            line-height: 1.6;
+            line-height: 1.7;
         }
 
         header {
             background: #111827;
             color: white;
-            padding: 28px 20px;
+            padding: 32px 20px;
             text-align: center;
         }
 
@@ -60,66 +62,59 @@
         }
 
         .container {
-            max-width: 1000px;
+            max-width: 900px;
             margin: 40px auto;
             padding: 0 20px;
         }
 
         .intro {
             background: white;
-            padding: 28px;
+            padding: 30px;
             border-radius: 12px;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         }
 
-        .intro h2 {
-            margin-top: 0;
-        }
-
-        .guides {
+        .guide-list {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
+            gap: 18px;
         }
 
-        .guide-card {
+        .guide {
             background: white;
+            padding: 25px;
             border-radius: 12px;
-            padding: 24px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            transition: transform 0.2s ease;
+            border: 1px solid #e5e7eb;
         }
 
-        .guide-card:hover {
-            transform: translateY(-3px);
-        }
-
-        .guide-card h3 {
+        .guide h2 {
             margin-top: 0;
+            font-size: 22px;
+        }
+
+        .guide h2 a {
             color: #111827;
+            text-decoration: none;
         }
 
-        .guide-card p {
-            color: #4b5563;
+        .guide h2 a:hover {
+            color: #2563eb;
         }
 
-        .read-more {
-            display: inline-block;
-            margin-top: 8px;
+        .guide p {
+            margin-bottom: 12px;
+        }
+
+        .read {
             color: #2563eb;
             font-weight: bold;
             text-decoration: none;
         }
 
-        .read-more:hover {
-            text-decoration: underline;
-        }
-
         .calculator-box {
             background: #111827;
             color: white;
-            padding: 28px;
+            padding: 30px;
             border-radius: 12px;
             margin-top: 35px;
             text-align: center;
@@ -127,6 +122,7 @@
 
         .calculator-box h2 {
             margin-top: 0;
+            color: white;
         }
 
         .calculator-button {
@@ -156,21 +152,11 @@
 
         @media (max-width: 600px) {
             header h1 {
-                font-size: 26px;
+                font-size: 27px;
             }
 
             .container {
                 margin-top: 25px;
-            }
-
-            .intro,
-            .guide-card {
-                padding: 20px;
-            }
-
-            nav a {
-                display: inline-block;
-                margin: 5px 7px;
             }
         }
     </style>
@@ -180,7 +166,7 @@
 
 <header>
     <h1>Salary Guides</h1>
-    <p>Clear salary breakdowns for hourly, weekly, monthly and annual pay.</p>
+    <p>Hourly, weekly, monthly and annual salary information</p>
 </header>
 
 <nav>
@@ -193,94 +179,121 @@
 <main class="container">
 
     <section class="intro">
-        <h2>Salary Guides & Pay Information</h2>
+
+        <h1>Salary Guides</h1>
 
         <p>
-            Understanding your salary can be easier when you see how your
-            hourly, daily, weekly, monthly and annual pay compare.
-            Our salary guides provide simple explanations and practical
-            examples to help you understand different pay levels.
+            Explore our salary guides to understand how hourly wages,
+            annual salaries, weekly income and monthly pay compare.
         </p>
 
         <p>
-            Use our guides together with the
-            <a href="index.html">Salary Calculator</a>
-            to calculate your own pay.
+            The calculations in these guides generally use a standard
+            40-hour workweek and 52 weeks per year unless otherwise stated.
+            Figures are gross income estimates before taxes and deductions.
         </p>
+
     </section>
 
-    <section class="guides">
+    <section class="guide-list">
 
-        <article class="guide-card">
-            <h3>How Much Is $25 an Hour a Year?</h3>
+        <article class="guide">
+
+            <h2>
+                <a href="guides/25-an-hour.html">
+                    How Much Is $25 an Hour a Year?
+                </a>
+            </h2>
 
             <p>
                 See how a $25 hourly wage translates into annual,
-                monthly, weekly, daily and hourly income.
+                monthly, weekly and daily gross income.
             </p>
 
-            <a class="read-more" href="guides/25-an-hour.html">
+            <a class="read" href="guides/25-an-hour.html">
                 Read the guide →
             </a>
+
         </article>
 
-        <article class="guide-card">
-            <h3>How Much Is $30 an Hour a Year?</h3>
+        <article class="guide">
+
+            <h2>
+                <a href="guides/30-an-hour.html">
+                    How Much Is $30 an Hour a Year?
+                </a>
+            </h2>
 
             <p>
-                Learn how much you could earn annually and monthly
-                when making $30 per hour.
+                Find out how much $30 per hour is worth annually,
+                monthly, weekly and daily.
             </p>
 
-            <a class="read-more" href="guides/30-an-hour.html">
+            <a class="read" href="guides/30-an-hour.html">
                 Read the guide →
             </a>
+
         </article>
 
-        <article class="guide-card">
-            <h3>$50,000 Salary Breakdown</h3>
+        <article class="guide">
+
+            <h2>
+                <a href="guides/50000-salary.html">
+                    $50,000 Salary Breakdown
+                </a>
+            </h2>
 
             <p>
-                Explore what a $50,000 annual salary means in terms
-                of monthly, weekly, daily and hourly pay.
+                Learn how a $50,000 annual salary translates into
+                hourly, monthly, weekly and daily pay.
             </p>
 
-            <a class="read-more" href="guides/50000-salary.html">
+            <a class="read" href="guides/50000-salary.html">
                 Read the guide →
             </a>
+
         </article>
 
-        <article class="guide-card">
-            <h3>Hourly vs. Annual Salary</h3>
+        <article class="guide">
+
+            <h2>
+                <a href="guides/hourly-vs-annual.html">
+                    Hourly vs Annual Salary
+                </a>
+            </h2>
 
             <p>
-                Understand the difference between hourly wages and
-                annual salaries and how to convert between them.
+                Learn how to convert hourly pay to annual salary
+                and annual salary back into an hourly rate.
             </p>
 
-            <a class="read-more" href="guides/hourly-vs-annual.html">
+            <a class="read" href="guides/hourly-vs-annual.html">
                 Read the guide →
             </a>
+
         </article>
 
     </section>
 
     <section class="calculator-box">
+
         <h2>Calculate Your Salary</h2>
 
         <p>
-            Want to convert an hourly wage into annual, monthly,
-            weekly or daily pay?
+            Convert an hourly wage into estimated annual,
+            monthly, weekly and daily income.
         </p>
 
         <a class="calculator-button" href="index.html">
             Open Salary Calculator
         </a>
+
     </section>
 
 </main>
 
 <footer>
+
     <p>© 2026 Salary Ledger. All rights reserved.</p>
 
     <p>
@@ -290,7 +303,9 @@
         |
         <a href="contact.html">Contact</a>
     </p>
+
 </footer>
 
 </body>
-              </html>
+</html>
+```
